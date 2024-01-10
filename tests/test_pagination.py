@@ -4,12 +4,9 @@ import pytest
 from src.requests.api_endpoints import EndPoints
 from src.requests.base_request import Base_Request, Methods
 
-"""Fixture to share accross all the test scenarios a Base_Request object"""
-@pytest.fixture
-def Req():
-    return Base_Request()
-
-"""Scenario 1: Default page size (50)."""
+"""Scenario 1: Default page size (50).
+    all the tests are using the fixture stored in conftest.py
+"""
 @pytest.mark.pagination
 def test_default_page_size(Req: Base_Request):
     #Send a search request without specifying a page size.
@@ -45,7 +42,7 @@ def test_custom_page_size(Req: Base_Request):
     assert "next" in pagination["urls"], "link 'next' does not appear in pagination"
 
 
-"""Scenario 3: Pagination with filtering"""
+"""Scenario 3: Pagination with filtering 1 - correct params"""
 #test tags
 @pytest.mark.pagination
 @pytest.mark.search_endpoing
@@ -72,7 +69,7 @@ def test_pagination_with_filtering(Req: Base_Request):
     assert len(pagination["urls"]) == 0, "No pagination links should exists"
 
 
-"""Scenario 4: Pagination with filtering 2"""
+"""Scenario 4: Pagination with filtering 2 - full title"""
 #test tags
 @pytest.mark.pagination
 @pytest.mark.filtering
@@ -93,6 +90,32 @@ def test_pagination_with_filtering2(Req: Base_Request):
         assert val["country"]=="Canada" , f"the item at the possition {index} has a different country value, actual={val['country']} expected 'Canada'"
         assert val["year"]=="1991" , f"the item at the possition {index} has a different year value, actual={val['year']} expected '1991'"
         assert val["genre"][0]=="Rock", f"the item at the possition {index} has a different genre value, actual={val['genre'][0]} expected 'genre'"
+
+    #Assert that pagination works correctly within the filtered results.
+    assert pagination["items"] == len(results)
+    assert len(pagination["urls"]) == 0, "No pagination links should exists"
+
+"""Scenario 5: Pagination with filtering 3 - wrong genre"""
+#test tags
+@pytest.mark.pagination
+@pytest.mark.filtering
+def test_pagination_with_filtering3(Req: Base_Request):
+    #adding full title
+    params={"q":"Nirvana", "type":"release", "title":"Nirvana - Nevermind", "country":"canada","year":"1991", "genre":"techno"}
+
+    #Send a search request with artist filtering or other specified filtering options.
+    response = Req.request(Methods.GET, EndPoints.SEARCH, params=params)
+    assert response.status_code==200, "the request was not successfull"
+    pagination=response.json()["pagination"]
+    results=response.json()["results"]
+    print(results)
+    #Assertion 1: that the response only includes results matching the filter criteria.
+    for index, val in enumerate(results):
+        assert val["type"]=="release", f"the item at the possition {index} has a different type value, actual={val['type']} expected 'release'"
+        assert val["title"]=="Nirvana - Nevermind" , f"the item at the possition {index} has a different title value, actual={val['title']} expected 'Nirvana - Nevermind'"
+        assert val["country"]=="Canada" , f"the item at the possition {index} has a different country value, actual={val['country']} expected 'Canada'"
+        assert val["year"]=="1991" , f"the item at the possition {index} has a different year value, actual={val['year']} expected '1991'"
+        assert val["genre"][0]=="techno", f"the item at the possition {index} has a different genre value, actual={val['genre'][0]} expected 'techno'"
 
     #Assert that pagination works correctly within the filtered results.
     assert pagination["items"] == len(results)

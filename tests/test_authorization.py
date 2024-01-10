@@ -6,12 +6,9 @@ from utils.config import API_KEY, API_SECRET
 from src.requests.api_endpoints import EndPoints
 from src.requests.base_request import Base_Request, Methods
 
-"""Fixture to share accross all the test scenarios a Base_Request object"""
-@pytest.fixture
-def Req():
-    return Base_Request()
 
-"""Scenario 1: Missing Authorization header """
+"""Scenario 1: Missing Authorization header 
+ all the tests are using the fixture stored in conftest.py """
 @pytest.mark.authorization
 @pytest.mark.search_endpoing
 def test_missing_authorization_secret(Req:Base_Request):
