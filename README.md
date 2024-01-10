@@ -14,7 +14,7 @@ From the root directory execute
 ```
 
 
-### CONFIGURE SO ENVIRONMENT VARIABLES
+### CONFIGURE OS ENVIRONMENT VARIABLES
 
 | VARIABLE     | VALUE     |
 | :--------    | :-------  | 
