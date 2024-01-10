@@ -15,7 +15,7 @@ From the root directory execute
 
 
 ### CONFIGURE OS ENVIRONMENT VARIABLES
-
+In order to run the tests suite 3 environment variables must be set
 | VARIABLE     | VALUE     |
 | :--------    | :-------  | 
 | `API_KEY`    | ABC123    |
