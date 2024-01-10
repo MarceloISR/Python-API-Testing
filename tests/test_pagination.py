@@ -110,12 +110,7 @@ def test_pagination_with_filtering3(Req: Base_Request):
     results=response.json()["results"]
     print(results)
     #Assertion 1: that the response only includes results matching the filter criteria.
-    for index, val in enumerate(results):
-        assert val["type"]=="release", f"the item at the possition {index} has a different type value, actual={val['type']} expected 'release'"
-        assert val["title"]=="Nirvana - Nevermind" , f"the item at the possition {index} has a different title value, actual={val['title']} expected 'Nirvana - Nevermind'"
-        assert val["country"]=="Canada" , f"the item at the possition {index} has a different country value, actual={val['country']} expected 'Canada'"
-        assert val["year"]=="1991" , f"the item at the possition {index} has a different year value, actual={val['year']} expected '1991'"
-        assert val["genre"][0]=="techno", f"the item at the possition {index} has a different genre value, actual={val['genre'][0]} expected 'techno'"
+    assert pagination["items"]==0, "no matching results should be displayed"
 
     #Assert that pagination works correctly within the filtered results.
     assert pagination["items"] == len(results)
