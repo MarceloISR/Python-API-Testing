@@ -2,16 +2,19 @@
 # SETUP
 
 From the root directory execute
-
-### Save requirements
-```bash
-  python -m pip freeze > requirements.txt
-```
-
 ### Install requirements
 ```bash
   python -m pip install -r requirements.txt
 ```
+
+
+### Save requirements
+if some changes are made, new libraries were installed, then run the command
+```bash
+  python -m pip freeze > requirements.txt
+```
+
+
 
 
 ### CONFIGURE OS ENVIRONMENT VARIABLES
